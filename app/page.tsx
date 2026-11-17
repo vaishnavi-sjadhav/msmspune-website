@@ -1,52 +1,39 @@
-"use client";
+import React from "react";
+import { Navbar } from "@/components/navbar";
+import { HeroSection } from "@/components/hero";
+import { AboutSection } from "@/components/about";
+import { UpcomingEventsSection } from "@/components/events";
+import { HomeContactSection } from "@/components/contact";
+import { Footer } from "@/components/common/Footer";
 
-import React, { useState } from "react";
-import { Navbar } from "@/components/layout/Navbar";
-import { HeroSection } from "@/components/sections/HeroSection";
-import { AboutSection } from "@/components/sections/AboutSection";
-import { WelcomeSection } from "@/components/sections/WelcomeSection";
-import { EventsSection } from "@/components/sections/EventsSection";
-import { NewsSection } from "@/components/sections/NewsSection";
-import { ContactSection } from "@/components/sections/ContactSection";
-import { Footer } from "@/components/layout/Footer";
-import { EnquiryModal } from "@/components/ui/EnquiryModal";
+export const metadata = {
+  title: "MSMS Pune | Empowering Minds, Brewing Futures",
+  description:
+    "Matrix School of Management Studies (MSMS Pune): A premier management institution in Pune. Explore our MBA programs, admissions, faculty, placements, upcoming events, and campus contact desk.",
+};
 
 export default function Home() {
-  const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
-
   return (
-    <div className="min-h-screen flex flex-col bg-white selection:bg-[#c89650] selection:text-white">
-      {/* 1. Floating Frosted Glass Navbar over Hero */}
-      <Navbar variant="hero-glass" onOpenEnquiry={() => setIsEnquiryOpen(true)} />
+    <div className="flex flex-col min-h-screen bg-white">
+      {/* Top Navigation Bar */}
+      <Navbar />
 
-      {/* 2. Main Page Content (Full-bleed Hero with 5s Auto-Slider) */}
       <main className="flex-1">
-        <HeroSection onOpenEnquiry={() => setIsEnquiryOpen(true)} />
+        {/* 1. Hero Section with Video Background & Audio Controls */}
+        <HeroSection />
 
-        {/* About Section (Shaping Future Leaders Through Quality Management Education) */}
-        <AboutSection onOpenEnquiry={() => setIsEnquiryOpen(true)} />
+        {/* 2. Cinematic 3D About Us Section (NAAC Plaque & Leadership Book) */}
+        <AboutSection />
 
-        {/* Welcome Section with 3 Academic Feature Cards */}
-        <WelcomeSection />
+        {/* 3. 3D CoverFlow Upcoming Events Section */}
+        <UpcomingEventsSection />
 
-        {/* Matrix Events Section (Staggered Cards) */}
-        <EventsSection />
-
-        {/* News & Updates Section with Degree Scroll & Notices */}
-        <NewsSection />
-
-        {/* Contact Us Section (Location, Details & Interactive Form) */}
-        <ContactSection />
+        {/* 4. Contact & Admissions Desk Section */}
+        <HomeContactSection />
       </main>
 
-      {/* 4. Footer */}
+      {/* University Footer with fotter.png background */}
       <Footer />
-
-      {/* Interactive Admission Enquiry Modal */}
-      <EnquiryModal
-        isOpen={isEnquiryOpen}
-        onClose={() => setIsEnquiryOpen(false)}
-      />
     </div>
   );
 }
