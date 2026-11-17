@@ -47,8 +47,8 @@ export function NavActions({ onToggleMobileMenu, isMobileMenuOpen }: NavActionsP
         <button
           type="button"
           onClick={onToggleMobileMenu}
-          className="lg:hidden p-1.5 sm:p-2 text-[#FAF3E8] hover:text-white rounded-xl hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C69A60] shrink-0 min-w-[40px] min-h-[40px] flex items-center justify-center cursor-pointer"
-          aria-label="Toggle navigation menu"
+          className="lg:hidden p-1.5 sm:p-2 text-[#FAF3E8] hover:text-white rounded-xl hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C69A60] shrink-0 min-w-[40px] min-h-[40px] flex items-center justify-center cursor-pointer touch-manipulation select-none active:scale-95"
+          aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={isMobileMenuOpen}
         >
           {isMobileMenuOpen ? (

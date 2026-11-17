@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS, ADMISSION_PAGES } from "@/constants/navigation";
@@ -13,6 +13,7 @@ interface MobileMenuProps {
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const pathname = usePathname();
   const [expandedSection, setExpandedSection] = useState<string | null>("Admissions");
+  const prevPathname = useRef(pathname);
 
   // Prevent background body scroll when mobile menu is open
   useEffect(() => {
@@ -26,10 +27,24 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     };
   }, [isOpen]);
 
-  // Close menu automatically on route changes
+  // Close menu ONLY when route actually changes, never on initial mount
   useEffect(() => {
-    onClose();
+    if (prevPathname.current !== pathname) {
+      prevPathname.current = pathname;
+      onClose();
+    }
   }, [pathname, onClose]);
+
+  // Close on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -39,9 +54,9 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
   return (
     <div
-      className="lg:hidden fixed inset-x-0 top-[64px] sm:top-[70px] bottom-0 z-50 bg-gradient-to-b from-[#2A050D]/98 via-[#20040A]/98 to-[#170206]/98 backdrop-blur-2xl text-[#FAF3E8] overflow-y-auto overscroll-contain border-t border-[#C69A60]/30 animate-in slide-in-from-top-2 duration-200"
+      className="lg:hidden fixed inset-x-0 top-[64px] sm:top-[70px] bottom-0 z-40 bg-gradient-to-b from-[#2A050D] via-[#20040A] to-[#150206] text-[#FAF3E8] overflow-y-auto overscroll-contain border-t border-[#C69A60]/30 animate-in slide-in-from-top-2 duration-200"
     >
-      <div className="px-4 sm:px-6 py-4 pb-28 space-y-4 max-w-lg mx-auto">
+      <div className="px-4 sm:px-6 py-4 pb-32 space-y-4 max-w-lg mx-auto">
         
         {/* Admissions Quick Status Banner */}
         <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#4A0E1B] to-[#330711] border border-[#C69A60]/40 shadow-md">
