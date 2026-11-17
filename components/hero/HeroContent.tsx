@@ -16,9 +16,9 @@ export function HeroContent({
   onExploreVideo,
 }: HeroContentProps) {
   return (
-    <div className="flex flex-col justify-center max-w-2xl z-10 space-y-4 sm:space-y-6">
+    <div className="flex flex-col items-center justify-center text-center max-w-3xl mx-auto z-10 space-y-4 sm:space-y-6">
       {/* Editorial Main Title */}
-      <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-[62px] xl:text-[68px] font-bold text-white leading-[1.1] sm:leading-[1.08] tracking-tight drop-shadow-lg">
+      <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[70px] font-bold text-white leading-[1.1] sm:leading-[1.08] tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]">
         <span className="block text-white">{titleLine1}</span>
         <span className="block mt-1 bg-gradient-to-r from-[#FAF3E8] via-[#F3E5D0] to-[#E0BA85] bg-clip-text text-transparent">
           {titleLine2}
@@ -26,12 +26,12 @@ export function HeroContent({
       </h1>
 
       {/* Narrative Subtitle */}
-      <p className="text-sm sm:text-base md:text-[17px] text-white/90 font-normal leading-relaxed max-w-xl drop-shadow-sm">
+      <p className="text-sm sm:text-base md:text-[18px] text-white/95 font-medium leading-relaxed max-w-2xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
         {description}
       </p>
 
       {/* CTA Action Buttons */}
-      <div className="pt-2">
+      <div className="pt-3 flex justify-center w-full">
         <HeroActions onExploreVideo={onExploreVideo} />
       </div>
     </div>

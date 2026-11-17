@@ -10,20 +10,20 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#4A0E1B] text-white shadow-md border-b border-[#3D0A14]/40 select-none">
-      <div className="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-10">
-        <div className="flex items-center justify-between h-[58px] sm:h-[64px]">
+    <header className="sticky top-0 z-50 w-full bg-[#3D0C16]/95 backdrop-blur-md text-[#FAF3E8] shadow-lg border-b border-[#C69A60]/25 select-none transition-all">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-[64px] sm:h-[70px]">
           {/* Left: Brand Logo & Insignia */}
           <div className="flex-shrink-0 flex items-center">
             <BrandLogo />
           </div>
 
           {/* Center: Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center justify-center flex-1 px-8">
+          <div className="hidden lg:flex items-center justify-center flex-1 px-4 xl:px-6">
             <NavLinks />
           </div>
 
-          {/* Right: Actions (Apply Now, Search, Bag, Hamburger) */}
+          {/* Right: Actions (Helpline, Apply Now, Search, Hamburger) */}
           <div className="flex-shrink-0 flex items-center">
             <NavActions
               isMobileMenuOpen={isMobileMenuOpen}
@@ -41,4 +41,5 @@ export function Navbar() {
     </header>
   );
 }
+
 export default Navbar;

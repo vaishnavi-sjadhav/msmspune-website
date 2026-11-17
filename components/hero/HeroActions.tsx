@@ -29,7 +29,7 @@ export function HeroActions({
 
   return (
     <>
-      <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
+      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2">
         {/* Primary CTA: Solid Gold Gradient Pill Button */}
         <Link
           href={primaryLink}

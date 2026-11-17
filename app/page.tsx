@@ -2,6 +2,8 @@ import React from "react";
 import { Navbar } from "@/components/navbar";
 import { HeroSection } from "@/components/hero";
 import { AboutSection } from "@/components/about";
+import { WhatCanIStudySection } from "@/components/study";
+import { StarPlacementsSection } from "@/components/placements";
 import { UpcomingEventsSection } from "@/components/events";
 import { HomeContactSection } from "@/components/contact";
 import { Footer } from "@/components/common/Footer";
@@ -19,16 +21,22 @@ export default function Home() {
       <Navbar />
 
       <main className="flex-1">
-        {/* 1. Hero Section with Video Background & Audio Controls */}
+        {/* 1. Hero Section with Ambient Campus Video Background */}
         <HeroSection />
 
         {/* 2. Cinematic 3D About Us Section (NAAC Plaque & Leadership Book) */}
         <AboutSection />
 
-        {/* 3. 3D CoverFlow Upcoming Events Section */}
+        {/* 3. 3D CoverFlow Star Placements Section */}
+        <StarPlacementsSection />
+
+        {/* 4. Premium "What Can I Study?" Section */}
+        <WhatCanIStudySection />
+
+        {/* 5. 3D CoverFlow Upcoming Events Section */}
         <UpcomingEventsSection />
 
-        {/* 4. Contact & Admissions Desk Section */}
+        {/* 6. Contact & Admissions Desk Section */}
         <HomeContactSection />
       </main>
 

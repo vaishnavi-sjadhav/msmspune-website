@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS, ADMISSION_PAGES } from "@/constants/navigation";
@@ -14,7 +14,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const pathname = usePathname();
   const [expandedSection, setExpandedSection] = useState<string | null>("Admissions");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -32,20 +32,20 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   };
 
   return (
-    <div className="lg:hidden fixed inset-x-0 top-[58px] sm:top-[64px] bottom-0 z-50 bg-[#2D070F]/98 backdrop-blur-2xl text-[#FAF3E8] overflow-y-auto border-t border-[#C69A60]/20 animate-in slide-in-from-top-2 duration-200">
+    <div className="lg:hidden fixed inset-x-0 top-[64px] sm:top-[70px] bottom-0 z-50 bg-[#2D070F]/98 backdrop-blur-2xl text-[#FAF3E8] overflow-y-auto border-t border-[#C69A60]/30 animate-in slide-in-from-top-2 duration-200">
       <div className="px-4 sm:px-6 py-5 pb-24 space-y-4">
         {/* Admissions Quick Hub Banner on Mobile */}
-        <div className="p-3.5 rounded-xl bg-gradient-to-r from-[#5B1525] to-[#3D0C16] border border-[#C69A60]/40 shadow-lg">
+        <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#5B1525] to-[#3D0C16] border border-[#C69A60]/40 shadow-lg">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-[#C69A60] uppercase tracking-wider">
-              MBA Admissions 2026
+            <span className="text-xs font-bold text-[#E0BA85] uppercase tracking-wider">
+              MBA Admissions 2026-27
             </span>
             <span className="text-[10px] bg-[#87977F]/30 text-[#FAF3E8] px-2 py-0.5 rounded-full border border-[#87977F]/40 font-semibold">
               CAP Open
             </span>
           </div>
           <p className="text-xs text-white/80 mt-1 leading-relaxed">
-            Direct access to all 7 admission web pages, eligibility checks & online enquiry.
+            Centralized CET / CAP seat rounds & direct online enquiry assistance.
           </p>
         </div>
 
@@ -65,18 +65,18 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       href="/admissions"
                       onClick={onClose}
                       className={`text-base font-semibold py-2 transition-colors flex items-center gap-2 ${
-                        isActive ? "text-[#C69A60]" : "text-[#FAF3E8] hover:text-[#C69A60]"
+                        isActive ? "text-[#E0BA85]" : "text-[#FAF3E8] hover:text-[#E0BA85]"
                       }`}
                     >
                       <span>{item.label}</span>
                       <span className="text-[10px] bg-[#C69A60] text-[#3D0C16] font-bold px-1.5 py-0.5 rounded">
-                        7 Pages
+                        7 Steps
                       </span>
                     </Link>
 
                     <button
                       onClick={() => toggleSection(item.label)}
-                      className="p-2 text-[#C69A60] hover:text-[#FAF3E8]"
+                      className="p-2 text-[#C69A60] hover:text-white"
                       aria-label="Toggle admissions subpages"
                     >
                       <svg
@@ -130,7 +130,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     href={item.href}
                     onClick={onClose}
                     className={`text-base font-medium py-2 transition-colors ${
-                      isActive ? "text-[#C69A60] font-semibold" : "text-[#FAF3E8]/90 hover:text-white"
+                      isActive ? "text-[#E0BA85] font-semibold" : "text-[#FAF3E8]/90 hover:text-white"
                     }`}
                   >
                     {item.label}
@@ -161,7 +161,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         key={subItem.label}
                         href={subItem.href}
                         onClick={onClose}
-                        className="block py-1.5 text-xs text-white/80 hover:text-[#C69A60]"
+                        className="block py-1.5 text-xs text-white/80 hover:text-[#E0BA85]"
                       >
                         <div className="font-medium">{subItem.label}</div>
                       </Link>
@@ -178,15 +178,20 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <Link
             href="/admissions/enquiry"
             onClick={onClose}
-            className="w-full block text-center py-3 px-5 text-sm font-semibold text-[#3D0C16] bg-gradient-to-r from-[#C69A60] to-[#E0BA85] rounded-full shadow-lg hover:brightness-105 transition-all"
+            className="w-full block text-center py-3 px-5 text-sm font-bold text-[#3D0C16] bg-gradient-to-r from-[#C69A60] to-[#E0BA85] rounded-full shadow-lg hover:brightness-105 transition-all"
           >
-            Apply for MBA 2026-27
+            Apply for MBA 2026-27 →
           </Link>
-          <div className="text-center text-xs text-white/60">
-            Admissions Desk: +91 20 2569 0000 • admissions@msmspune.com
+          <div className="text-center text-xs text-white/70">
+            Admissions Helpline:{" "}
+            <a href="tel:+912024356000" className="text-[#E0BA85] font-semibold underline">
+              +91 20 2435 6000
+            </a>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+export default MobileMenu;

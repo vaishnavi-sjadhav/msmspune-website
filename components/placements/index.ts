@@ -1,6 +1,7 @@
 export * from "./PlacementHero";
 export * from "./PlacementHighlights";
 export * from "./StudentSuccessCarousel";
+export * from "./StarPlacementsSection";
 export * from "./RecruitersMarquee";
 export * from "./PlacementProcess";
 export * from "./PlacementActivities";

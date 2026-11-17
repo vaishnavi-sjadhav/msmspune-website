@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -18,84 +18,112 @@ interface EventCardData {
 }
 
 export function UpcomingEventsSection() {
-  const [activeIndex, setActiveIndex] = useState(1); // Default to center card (Industry Expert Session)
+  // Default to index 2 (Center card: "Industry Expert Session", matching user mockup)
+  const [activeIndex, setActiveIndex] = useState(2);
   const [selectedEvent, setSelectedEvent] = useState<EventCardData | null>(null);
   const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
   const [regForm, setRegForm] = useState({ name: "", email: "", mobile: "", college: "" });
 
   const events: EventCardData[] = [
     {
-      id: "recruitment-drive",
-      day: "02",
-      month: "Dec",
+      id: "ceramic-arts",
+      day: "15",
+      month: "OCT",
       year: "2026",
-      title: "Campus Recruitment Drive",
-      description: "Meet top recruiters and explore career opportunities.",
-      location: "Campus",
-      time: "09:00 AM – 05:00 PM",
-      image: "/events/3d-recruitment-drive.jpg",
+      title: "Ceramic Arts Workshop",
+      description: "Learn the fundamentals of pottery, clay shaping, and glazing.",
+      location: "Studio 4",
+      time: "10:00 AM - 2:00 PM",
+      image: "/events/ceramic-arts.jpg",
       icon: (
-        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-          />
+        <svg className="w-4 h-4 text-[#FCE9C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+        </svg>
+      ),
+    },
+    {
+      id: "campus-recruitment",
+      day: "02",
+      month: "DEC",
+      year: "2026",
+      title: "Campus Recruitment",
+      description: "Meet top recruiters and explore executive management career opportunities.",
+      location: "Studio 4",
+      time: "10:00 AM - 2:00 PM",
+      image: "/events/campus-recruitment.jpg",
+      icon: (
+        <svg className="w-4 h-4 text-[#FCE9C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
       ),
     },
     {
       id: "expert-session",
-      day: "25",
-      month: "Nov",
+      day: "23",
+      month: "NOV",
       year: "2026",
       title: "Industry Expert Session",
-      description: "Gain insights from industry leaders and industry experts.",
+      description: "Gain valuable leadership insights from renowned industry leaders and experts.",
       location: "Seminar Hall",
-      time: "10:00 AM – 12:00 PM",
-      image: "/events/3d-expert-session.jpg",
+      time: "10:00 AM - 12:00 PM",
+      image: "/events/expert-session.jpg",
       icon: (
-        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-          />
+        <svg className="w-4 h-4 text-[#FCE9C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
         </svg>
       ),
     },
     {
       id: "digital-marketing",
       day: "10",
-      month: "Dec",
+      month: "DEC",
       year: "2026",
       title: "Digital Marketing Workshop",
-      description: "Enhance your skills with hands-on training.",
+      description: "Enhance your skills with hands-on training in growth marketing & analytics.",
       location: "Seminar Hall",
-      time: "02:00 PM – 04:00 PM",
-      image: "/events/3d-digital-marketing.jpg",
+      time: "10:00 AM - 12:00 PM",
+      image: "/events/digital-marketing.jpg",
       icon: (
-        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6M4 20h16"
-          />
+        <svg className="w-4 h-4 text-[#FCE9C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6M4 20h16" />
+        </svg>
+      ),
+    },
+    {
+      id: "robotics",
+      day: "20",
+      month: "JAN",
+      year: "2027",
+      title: "Robotics Fundamentals",
+      description: "Build and program your first automated robot with microcontroller logic.",
+      location: "Lab B",
+      time: "01:00 PM - 5:00 PM",
+      image: "/events/robotics.jpg",
+      icon: (
+        <svg className="w-4 h-4 text-[#FCE9C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
         </svg>
       ),
     },
   ];
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     setActiveIndex((prev) => (prev === 0 ? events.length - 1 : prev - 1));
-  };
+  }, [events.length]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setActiveIndex((prev) => (prev === events.length - 1 ? 0 : prev + 1));
-  };
+  }, [events.length]);
+
+  // Keyboard navigation support
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") handlePrev();
+      if (e.key === "ArrowRight") handleNext();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handlePrev, handleNext]);
 
   const handleRegisterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,9 +131,19 @@ export function UpcomingEventsSection() {
   };
 
   return (
-    <section id="upcoming-events-section" className="relative bg-[#FAF3E8] py-14 sm:py-20 overflow-hidden text-[#3D0C16]">
-      {/* Decorative Dot Grid Pattern on Left (Matches Mockup) */}
-      <div className="absolute top-16 left-6 sm:left-12 opacity-35 pointer-events-none hidden sm:block">
+    <section id="upcoming-events-section" className="relative bg-[#FAF3E8] py-16 sm:py-24 overflow-hidden text-[#3D0C16] select-none">
+      
+      {/* Decorative Blueprint / Architectural Watermark Pattern on Right (Matching Mockup) */}
+      <div className="absolute top-0 right-0 w-[500px] h-full opacity-[0.07] pointer-events-none hidden md:block">
+        <svg viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+          <path d="M50 50L350 200M350 200L200 450M200 450L50 50M100 100L300 220M300 220L180 400M50 300L350 300M150 50L150 550" stroke="#3D0C16" strokeWidth="1.5" />
+          <circle cx="200" cy="300" r="140" stroke="#3D0C16" strokeWidth="1" strokeDasharray="4 4" />
+          <circle cx="200" cy="300" r="80" stroke="#3D0C16" strokeWidth="0.8" />
+        </svg>
+      </div>
+
+      {/* Decorative Dot Grid Pattern on Left */}
+      <div className="absolute top-16 left-6 sm:left-12 opacity-30 pointer-events-none hidden lg:block">
         <div className="grid grid-cols-6 gap-3">
           {Array.from({ length: 36 }).map((_, i) => (
             <div key={i} className="w-1.5 h-1.5 rounded-full bg-[#C69A60]" />
@@ -113,80 +151,112 @@ export function UpcomingEventsSection() {
         </div>
       </div>
 
-      {/* Decorative Soft Golden Ribbon Wave Lines in Background */}
-      <div className="absolute top-1/2 -right-20 w-96 h-96 bg-[#C69A60]/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-10 -left-10 w-96 h-96 bg-[#DEB887]/15 rounded-full blur-3xl pointer-events-none" />
+      {/* Ambient Radial Golden Glows */}
+      <div className="absolute top-1/2 -left-20 w-96 h-96 bg-[#C69A60]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-10 w-96 h-96 bg-[#DEB887]/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
         
-        {/* Top Header Block: Pill, Title, Subtitle, Flourish & Right Button */}
-        <div className="relative mb-12 sm:mb-16">
-          {/* Centered Headings */}
-          <div className="text-center space-y-2">
-            {/* "What's Next" Golden Pill Badge */}
-            <div className="inline-flex items-center px-4 py-1 rounded-full bg-[#FAF3E8] border border-[#C69A60]/70 text-[#C69A60] text-xs font-bold uppercase tracking-wider shadow-sm">
-              <span>What&apos;s Next</span>
-            </div>
+        {/* Header Block: Title, Subtitle, and Decorative Flourish (Exact match to Mockup) */}
+        <div className="text-center space-y-2 mb-10 sm:mb-14">
+          <h2 className="font-serif text-3xl sm:text-5xl lg:text-[52px] font-extrabold text-[#3D0C16] tracking-tight leading-tight">
+            Upcoming Events
+          </h2>
+          <p className="text-sm sm:text-base text-[#5B1525]/85 font-medium max-w-xl mx-auto">
+            Be a part of inspiring events and opportunities
+          </p>
 
-            {/* Main Heading */}
-            <h2 className="font-serif text-3xl sm:text-5xl lg:text-5.5xl font-extrabold text-[#3D0C16] tracking-tight">
-              Upcoming Events
-            </h2>
-
-            {/* Subtitle */}
-            <p className="text-xs sm:text-sm text-[#5B1525]/85 font-medium max-w-xl mx-auto">
-              Be a part of inspiring events and opportunities.
-            </p>
-
-            {/* Decorative Gold Flourish: ─── ◆ ─── */}
-            <div className="flex items-center justify-center gap-3 pt-1">
-              <span className="w-12 h-px bg-gradient-to-r from-transparent to-[#C69A60]" />
-              <span className="w-2 h-2 rotate-45 bg-[#C69A60]" />
-              <span className="w-12 h-px bg-gradient-to-l from-transparent to-[#C69A60]" />
-            </div>
-          </div>
-
-          {/* Top-Right "View All Events →" Button (Absolute on Desktop, matching mockup) */}
-          <div className="flex justify-center sm:absolute sm:top-2 sm:right-0 mt-4 sm:mt-0">
-            <button
-              onClick={() => {
-                const el = document.getElementById("past-events-section");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold text-[#FAF3E8] bg-gradient-to-r from-[#5B1525] via-[#4A0F1D] to-[#3D0C16] hover:brightness-110 border border-[#C69A60]/50 shadow-[0_6px_20px_rgba(61,12,22,0.2)] transition-all duration-300 cursor-pointer group"
-            >
-              <span>View All Events</span>
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </button>
+          {/* Decorative Gold Flourish: ─── ◆ ─── */}
+          <div className="flex items-center justify-center gap-3 pt-2">
+            <span className="w-12 h-px bg-gradient-to-r from-transparent to-[#C69A60]" />
+            <span className="w-2 h-2 rotate-45 bg-[#C69A60]" />
+            <span className="w-12 h-px bg-gradient-to-l from-transparent to-[#C69A60]" />
           </div>
         </div>
 
         {/* 3D CoverFlow Carousel Stage */}
-        <div className="relative py-4 sm:py-6">
+        <div className="relative py-4 sm:py-8">
           
-          {/* Circular Navigation Arrows (Positioned at Edges) */}
+          {/* Left Arrow Button */}
           <button
             onClick={handlePrev}
             aria-label="Previous event"
-            className="absolute left-0 sm:left-2 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white hover:bg-[#FAF3E8] text-[#3D0C16] border border-[#C69A60]/60 shadow-[0_8px_20px_rgba(61,12,22,0.12)] flex items-center justify-center transition-all duration-200 active:scale-95 cursor-pointer"
+            className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/95 hover:bg-white text-[#3D0C16] border border-[#C69A60]/50 shadow-[0_8px_25px_rgba(61,12,22,0.14)] flex items-center justify-center text-xl font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <span className="text-xl font-bold">‹</span>
+            ‹
           </button>
 
+          {/* Right Arrow Button */}
           <button
             onClick={handleNext}
             aria-label="Next event"
-            className="absolute right-0 sm:right-2 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white hover:bg-[#FAF3E8] text-[#3D0C16] border border-[#C69A60]/60 shadow-[0_8px_20px_rgba(61,12,22,0.12)] flex items-center justify-center transition-all duration-200 active:scale-95 cursor-pointer"
+            className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/95 hover:bg-white text-[#3D0C16] border border-[#C69A60]/50 shadow-[0_8px_25px_rgba(61,12,22,0.14)] flex items-center justify-center text-xl font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <span className="text-xl font-bold">›</span>
+            ›
           </button>
 
-          {/* Cards Display Grid: Desktop 3D Coverflow (3 cols) */}
-          <div className="hidden lg:grid lg:grid-cols-3 gap-6 sm:gap-8 items-center px-8 sm:px-14">
+          {/* 3D CoverFlow Viewport */}
+          <div
+            className="relative h-[480px] sm:h-[510px] w-full flex items-center justify-center overflow-visible"
+            style={{ perspective: "1400px", transformStyle: "preserve-3d" }}
+          >
             {events.map((evt, idx) => {
-              const isActive = idx === activeIndex;
-              const isLeft = (idx + 1) % events.length === activeIndex;
-              const isRight = (idx - 1 + events.length) % events.length === activeIndex;
+              // Calculate relative offset from active card (-2, -1, 0, 1, 2)
+              let offset = idx - activeIndex;
+              const half = Math.floor(events.length / 2);
+              if (offset > half) offset -= events.length;
+              if (offset < -half) offset += events.length;
+
+              const isCenter = offset === 0;
+              const isImmediateLeft = offset === -1;
+              const isImmediateRight = offset === 1;
+              const isFarLeft = offset === -2;
+              const isFarRight = offset === 2;
+
+              // Responsive 3D transform properties
+              let translateX = 0;
+              let rotateY = 0;
+              let scale = 1;
+              let zIndex = 10;
+              let opacity = 1;
+
+              if (isCenter) {
+                translateX = 0;
+                rotateY = 0;
+                scale = 1.08;
+                zIndex = 30;
+                opacity = 1;
+              } else if (isImmediateLeft) {
+                translateX = -260;
+                rotateY = 24;
+                scale = 0.92;
+                zIndex = 20;
+                opacity = 0.95;
+              } else if (isImmediateRight) {
+                translateX = 260;
+                rotateY = -24;
+                scale = 0.92;
+                zIndex = 20;
+                opacity = 0.95;
+              } else if (isFarLeft) {
+                translateX = -480;
+                rotateY = 36;
+                scale = 0.82;
+                zIndex = 10;
+                opacity = 0.75;
+              } else if (isFarRight) {
+                translateX = 480;
+                rotateY = -36;
+                scale = 0.82;
+                zIndex = 10;
+                opacity = 0.75;
+              } else {
+                translateX = offset < 0 ? -600 : 600;
+                rotateY = offset < 0 ? 45 : -45;
+                scale = 0.7;
+                zIndex = 5;
+                opacity = 0;
+              }
 
               return (
                 <motion.div
@@ -194,197 +264,120 @@ export function UpcomingEventsSection() {
                   onClick={() => setActiveIndex(idx)}
                   initial={false}
                   animate={{
-                    scale: isActive ? 1.05 : 0.94,
-                    y: isActive ? -8 : 6,
-                    rotateY: isLeft ? 10 : isRight ? -10 : 0,
-                    opacity: isActive ? 1 : 0.88,
+                    x: translateX,
+                    scale: scale,
+                    rotateY: rotateY,
+                    opacity: opacity,
+                    zIndex: zIndex,
                   }}
-                  transition={{ duration: 0.45, ease: "easeOut" }}
-                  style={{ perspective: 1000 }}
-                  className={`cursor-pointer transition-all duration-300 relative ${
-                    isActive ? "z-20" : "z-10 hover:opacity-100"
+                  transition={{
+                    type: "spring",
+                    stiffness: 280,
+                    damping: 28,
+                    mass: 0.8,
+                  }}
+                  style={{
+                    position: "absolute",
+                    transformStyle: "preserve-3d",
+                  }}
+                  className={`w-[270px] sm:w-[290px] md:w-[310px] cursor-pointer transition-shadow duration-300 ${
+                    isCenter ? "pointer-events-auto" : "pointer-events-auto hover:opacity-100"
                   }`}
                 >
-                  {/* Thick Metallic 3D Gold Extruded Beveled Frame */}
-                  <div className="p-3 sm:p-3.5 rounded-[30px] sm:rounded-[34px] bg-gradient-to-br from-[#E2B774] via-[#FCE9C2] to-[#A87432] shadow-[0_22px_45px_rgba(61,12,22,0.16),0_8px_16px_rgba(198,154,96,0.35)] ring-1 ring-white/60">
-                    <div className="rounded-[22px] sm:rounded-[26px] overflow-hidden bg-white shadow-inner flex flex-col justify-between">
+                  {/* Thick Metallic 3D Gold Extruded Beveled Frame (Exact match to Mockup) */}
+                  <div
+                    className={`p-3 rounded-[30px] sm:rounded-[34px] bg-gradient-to-br from-[#E2B774] via-[#FCE9C2] to-[#A87432] transition-all duration-300 ring-1 ring-white/60 ${
+                      isCenter
+                        ? "shadow-[0_28px_60px_rgba(61,12,22,0.22),0_12px_24px_rgba(198,154,96,0.38)] ring-2 ring-[#C69A60]/50"
+                        : "shadow-[0_16px_35px_rgba(61,12,22,0.12),0_6px_14px_rgba(198,154,96,0.22)]"
+                    }`}
+                  >
+                    <div className="rounded-[22px] sm:rounded-[24px] overflow-hidden bg-white shadow-inner flex flex-col justify-between h-[420px] sm:h-[440px]">
+                      
                       {/* Event Banner Image with Date Badge & Floating Icon */}
-                      <div className="relative w-full aspect-[16/10] overflow-hidden bg-gray-100">
+                      <div className="relative w-full h-[185px] sm:h-[195px] overflow-hidden bg-neutral-100">
                         <Image
                           src={evt.image}
                           alt={evt.title}
                           fill
-                          className="object-cover object-center"
-                          priority={isActive}
+                          className="object-cover object-center transition-transform duration-500 hover:scale-105"
+                          priority={isCenter}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
 
-                        {/* Top-Left Date Badge */}
-                        <div className="absolute top-3.5 left-3.5 rounded-xl overflow-hidden bg-gradient-to-b from-[#6B182B] via-[#521120] to-[#3B0B16] text-[#FAF3E8] p-2 sm:p-2.5 text-center min-w-[50px] shadow-lg border border-[#E2B774]/60">
-                          <span className="block font-serif text-lg sm:text-xl font-black leading-none text-white">
+                        {/* Top-Left Date Badge (Maroon Rounded Rect) */}
+                        <div className="absolute top-3 left-3 rounded-xl bg-gradient-to-b from-[#6B182B] via-[#521120] to-[#3B0B16] text-[#FAF3E8] p-2 text-center min-w-[46px] shadow-lg border border-[#E2B774]/70">
+                          <span className="block font-serif text-lg font-black leading-none text-white">
                             {evt.day}
                           </span>
-                          <span className="block text-[10px] font-bold tracking-wider uppercase text-[#FCE9C2] mt-0.5">
+                          <span className="block text-[9.5px] font-bold tracking-wider uppercase text-[#FCE9C2] mt-0.5">
                             {evt.month}
                           </span>
-                          <span className="block text-[8.5px] text-white/75 font-medium">
+                          <span className="block text-[8px] text-white/75 font-medium">
                             {evt.year}
                           </span>
                         </div>
 
-                        <div className="absolute bottom-0 inset-x-0 h-4 bg-gradient-to-t from-white to-transparent" />
-
-                        {/* Floating Maroon Circular Icon Badge */}
-                        <div className="absolute -bottom-4 left-5 w-11 h-11 rounded-full bg-gradient-to-br from-[#6B182B] to-[#3B0B16] border-2 border-[#E2B774] flex items-center justify-center shadow-lg z-10">
+                        {/* Bottom-left Overlapping Circular Icon Badge */}
+                        <div className="absolute -bottom-3.5 left-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-[#6B182B] to-[#3B0B16] border-2 border-[#E2B774] flex items-center justify-center shadow-md z-10">
                           {evt.icon}
                         </div>
                       </div>
 
                       {/* Content Box */}
-                      <div className="p-5 sm:p-6 pt-7 flex-1 flex flex-col justify-between">
+                      <div className="p-4 sm:p-5 pt-5 flex-1 flex flex-col justify-between">
                         <div>
-                          <h3 className="font-serif text-lg sm:text-1.5xl font-bold text-[#3D0C16] leading-snug">
+                          <h3 className="font-serif text-base sm:text-lg font-bold text-[#3D0C16] leading-snug line-clamp-2">
                             {evt.title}
                           </h3>
-                          <p className="text-xs sm:text-[13px] text-[#5B1525]/85 mt-2 leading-relaxed font-normal">
+                          <p className="text-xs text-[#5B1525]/85 mt-1.5 leading-relaxed font-normal line-clamp-2">
                             {evt.description}
                           </p>
-
-                          <div className="mt-4 pt-3 border-t border-[#C69A60]/20 flex flex-wrap items-center gap-y-2 gap-x-3 text-xs text-[#3D0C16]/75 font-medium">
-                            <div className="flex items-center gap-1.5">
-                              <span className="text-[#8A253A]">📍</span>
-                              <span>{evt.location}</span>
-                            </div>
-                            <span>|</span>
-                            <div className="flex items-center gap-1.5">
-                              <span className="text-[#8A253A]">🕒</span>
-                              <span>{evt.time}</span>
-                            </div>
-                          </div>
                         </div>
 
-                        <div className="pt-5 flex justify-end">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedEvent(evt);
-                              setIsRegisterSuccess(false);
-                              setRegForm({ name: "", email: "", mobile: "", college: "" });
-                            }}
-                            className={`py-2 px-5 rounded-full text-xs font-bold text-[#FAF3E8] bg-gradient-to-r from-[#5B1525] via-[#4A0F1D] to-[#3D0C16] hover:brightness-110 border border-[#C69A60]/50 shadow-md transition-all duration-200 flex items-center gap-1.5 cursor-pointer group/btn ${
-                              isActive ? "opacity-100" : "opacity-85 hover:opacity-100"
-                            }`}
-                          >
-                            <span>Register Now</span>
-                            <span className="transition-transform group-hover/btn:translate-x-1">→</span>
-                          </button>
+                        <div>
+                          {/* Location & Time Strip */}
+                          <div className="pt-3 border-t border-[#C69A60]/20 flex items-center gap-1.5 text-[11px] text-[#3D0C16]/80 font-medium">
+                            <span className="text-[#8A253A] font-bold">📍</span>
+                            <span className="truncate">{evt.location}</span>
+                            <span className="text-gray-300">|</span>
+                            <span className="text-[#8A253A] font-bold">🕒</span>
+                            <span className="truncate">{evt.time}</span>
+                          </div>
+
+                          {/* "Register Now →" Maroon Pill Button */}
+                          <div className="pt-3.5 flex justify-end">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedEvent(evt);
+                                setIsRegisterSuccess(false);
+                                setRegForm({ name: "", email: "", mobile: "", college: "" });
+                              }}
+                              className="py-1.5 px-4 rounded-full text-xs font-bold text-[#FAF3E8] bg-gradient-to-r from-[#6B182B] via-[#521120] to-[#3D0C16] hover:brightness-110 border border-[#C69A60]/50 shadow-md transition-all duration-200 flex items-center gap-1 cursor-pointer group/btn"
+                            >
+                              <span>Register Now</span>
+                              <span className="transition-transform group-hover/btn:translate-x-1">→</span>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Soft 3D Floor Shadow */}
-                  <div className="w-4/5 h-4 bg-black/15 blur-lg rounded-full mx-auto mt-2 pointer-events-none" />
+                  {/* Soft 3D Floor Shadow under center card */}
+                  <div
+                    className={`w-3/4 h-3.5 bg-black/15 blur-lg rounded-full mx-auto mt-2 transition-opacity duration-300 ${
+                      isCenter ? "opacity-100" : "opacity-40"
+                    }`}
+                  />
                 </motion.div>
               );
             })}
           </div>
 
-          {/* Mobile & Tablet (<1024px): Single Active Featured Card with Carousel Animation */}
-          <div className="lg:hidden px-4 sm:px-12 max-w-sm sm:max-w-md mx-auto">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={events[activeIndex].id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                className="relative z-20"
-              >
-                {/* Thick Metallic 3D Gold Extruded Beveled Frame */}
-                <div className="p-3 sm:p-3.5 rounded-[30px] sm:rounded-[34px] bg-gradient-to-br from-[#E2B774] via-[#FCE9C2] to-[#A87432] shadow-[0_22px_45px_rgba(61,12,22,0.16),0_8px_16px_rgba(198,154,96,0.35)] ring-1 ring-white/60">
-                  <div className="rounded-[22px] sm:rounded-[26px] overflow-hidden bg-white shadow-inner flex flex-col justify-between">
-                    {/* Event Banner Image with Date Badge & Floating Icon */}
-                    <div className="relative w-full aspect-[16/10] overflow-hidden bg-gray-100">
-                      <Image
-                        src={events[activeIndex].image}
-                        alt={events[activeIndex].title}
-                        fill
-                        className="object-cover object-center"
-                        priority
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-
-                      {/* Top-Left Date Badge */}
-                      <div className="absolute top-3.5 left-3.5 rounded-xl overflow-hidden bg-gradient-to-b from-[#6B182B] via-[#521120] to-[#3B0B16] text-[#FAF3E8] p-2 sm:p-2.5 text-center min-w-[50px] shadow-lg border border-[#E2B774]/60">
-                        <span className="block font-serif text-lg sm:text-xl font-black leading-none text-white">
-                          {events[activeIndex].day}
-                        </span>
-                        <span className="block text-[10px] font-bold tracking-wider uppercase text-[#FCE9C2] mt-0.5">
-                          {events[activeIndex].month}
-                        </span>
-                        <span className="block text-[8.5px] text-white/75 font-medium">
-                          {events[activeIndex].year}
-                        </span>
-                      </div>
-
-                      <div className="absolute bottom-0 inset-x-0 h-4 bg-gradient-to-t from-white to-transparent" />
-
-                      {/* Floating Maroon Circular Icon Badge */}
-                      <div className="absolute -bottom-4 left-5 w-11 h-11 rounded-full bg-gradient-to-br from-[#6B182B] to-[#3B0B16] border-2 border-[#E2B774] flex items-center justify-center shadow-lg z-10">
-                        {events[activeIndex].icon}
-                      </div>
-                    </div>
-
-                    {/* Content Box */}
-                    <div className="p-5 sm:p-6 pt-7 flex-1 flex flex-col justify-between">
-                      <div>
-                        <h3 className="font-serif text-lg sm:text-1.5xl font-bold text-[#3D0C16] leading-snug">
-                          {events[activeIndex].title}
-                        </h3>
-                        <p className="text-xs sm:text-[13px] text-[#5B1525]/85 mt-2 leading-relaxed font-normal">
-                          {events[activeIndex].description}
-                        </p>
-
-                        <div className="mt-4 pt-3 border-t border-[#C69A60]/20 flex flex-wrap items-center gap-y-2 gap-x-3 text-xs text-[#3D0C16]/75 font-medium">
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-[#8A253A]">📍</span>
-                            <span>{events[activeIndex].location}</span>
-                          </div>
-                          <span>|</span>
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-[#8A253A]">🕒</span>
-                            <span>{events[activeIndex].time}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="pt-5 flex justify-end">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedEvent(events[activeIndex]);
-                            setIsRegisterSuccess(false);
-                            setRegForm({ name: "", email: "", mobile: "", college: "" });
-                          }}
-                          className="py-2 px-5 rounded-full text-xs font-bold text-[#FAF3E8] bg-gradient-to-r from-[#5B1525] via-[#4A0F1D] to-[#3D0C16] hover:brightness-110 border border-[#C69A60]/50 shadow-md transition-all duration-200 flex items-center gap-1.5 cursor-pointer group/btn"
-                        >
-                          <span>Register Now</span>
-                          <span className="transition-transform group-hover/btn:translate-x-1">→</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Soft 3D Floor Shadow */}
-                <div className="w-4/5 h-4 bg-black/15 blur-lg rounded-full mx-auto mt-2 pointer-events-none" />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Bottom Pagination Dots (Matching Mockup ● ○ ○) */}
-          <div className="flex items-center justify-center gap-2 mt-8">
+          {/* Bottom Pagination Dots */}
+          <div className="flex items-center justify-center gap-2 mt-6 sm:mt-8">
             {events.map((_, i) => (
               <button
                 key={i}
@@ -392,7 +385,7 @@ export function UpcomingEventsSection() {
                 aria-label={`Go to event ${i + 1}`}
                 className={`transition-all duration-300 rounded-full cursor-pointer ${
                   activeIndex === i
-                    ? "bg-[#5B1525] w-7 h-2.5 shadow-sm"
+                    ? "bg-[#6B182B] w-7 h-2.5 shadow-sm"
                     : "bg-[#C69A60]/40 hover:bg-[#C69A60]/70 w-2.5 h-2.5"
                 }`}
               />
@@ -509,7 +502,7 @@ export function UpcomingEventsSection() {
 
                     <button
                       type="submit"
-                      className="w-full mt-3 py-3 rounded-full text-xs sm:text-sm font-bold text-[#FAF3E8] bg-gradient-to-r from-[#5B1525] via-[#4A0F1D] to-[#3D0C16] hover:brightness-110 shadow-md cursor-pointer border border-[#C69A60]/40"
+                      className="w-full mt-3 py-3 rounded-full text-xs sm:text-sm font-bold text-[#FAF3E8] bg-gradient-to-r from-[#6B182B] via-[#521120] to-[#3D0C16] hover:brightness-110 shadow-md cursor-pointer border border-[#C69A60]/40"
                     >
                       Confirm Event Registration →
                     </button>
@@ -523,3 +516,5 @@ export function UpcomingEventsSection() {
     </section>
   );
 }
+
+export default UpcomingEventsSection;
