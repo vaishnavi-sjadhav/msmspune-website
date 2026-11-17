@@ -15,12 +15,12 @@ export function ContactHero() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-[#3D0C16] via-[#4A0F1D] to-[#2E070F] text-[#FAF3E8]">
       {/* Background Campus Silhouette Blend */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-luminosity">
+      <div className="absolute inset-0 opacity-40 pointer-events-none">
         <Image
           src="/hero1.webp"
           alt="Campus Architecture Background"
           fill
-          className="object-cover object-center"
+          className="object-cover object-center brightness-105"
           priority
         />
       </div>

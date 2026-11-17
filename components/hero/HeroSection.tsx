@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { HeroContent } from "./HeroContent";
 import { ConnectWidget } from "@/components/common/ConnectWidget";
 import { VideoModal } from "@/components/common/VideoModal";
@@ -64,8 +65,18 @@ export function HeroSection() {
   return (
     <section className="relative w-full min-h-[calc(100vh-64px)] sm:min-h-[calc(100vh-70px)] min-h-[calc(100dvh-64px)] flex items-center overflow-hidden bg-black text-[#FAF3E8]">
       
-      {/* Background Video (Optimized for Mobile Visibility & Autoplay) */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      {/* Background Campus Image & Video (Properly Visible without Dark Shadow Overlays) */}
+      <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+        {/* Crisp Campus Image Base (Always visible immediately) */}
+        <Image
+          src="/about/legacy-campus-building.jpg"
+          alt="Matrix School of Management Studies Campus"
+          fill
+          priority
+          className="object-cover object-center select-none brightness-100"
+        />
+
+        {/* Background Video (Seamlessly layers over base image when active) */}
         <video
           ref={videoRef}
           autoPlay
@@ -78,9 +89,6 @@ export function HeroSection() {
         >
           <source src="/about/gemini_generated_video_d35f0e79.mp4" type="video/mp4" />
         </video>
-
-        {/* Minimal Mobile Vignette for Contrast without obscuring the video */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/45 pointer-events-none md:hidden" />
       </div>
 
       {/* Main Content Container (Properly balanced mobile vertical spacing) */}

@@ -23,6 +23,21 @@ export function UpcomingEventsSection() {
   const [selectedEvent, setSelectedEvent] = useState<EventCardData | null>(null);
   const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
   const [regForm, setRegForm] = useState({ name: "", email: "", mobile: "", college: "" });
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Touch swipe support for mobile
+  const touchStartX = React.useRef(0);
+  const touchEndX = React.useRef(0);
+
+  // Responsive mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const events: EventCardData[] = [
     {
@@ -115,6 +130,27 @@ export function UpcomingEventsSection() {
     setActiveIndex((prev) => (prev === events.length - 1 ? 0 : prev + 1));
   }, [events.length]);
 
+  // Touch swipe support for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const diff = touchStartX.current - touchEndX.current;
+    if (diff > 45) {
+      handleNext();
+    } else if (diff < -45) {
+      handlePrev();
+    }
+    touchStartX.current = 0;
+    touchEndX.current = 0;
+  };
+
   // Keyboard navigation support
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -131,7 +167,7 @@ export function UpcomingEventsSection() {
   };
 
   return (
-    <section id="upcoming-events-section" className="relative bg-[#FAF3E8] py-16 sm:py-24 overflow-hidden text-[#3D0C16] select-none">
+    <section id="upcoming-events-section" className="relative bg-[#FAF3E8] py-14 sm:py-24 overflow-hidden text-[#3D0C16] select-none">
       
       {/* Decorative Blueprint / Architectural Watermark Pattern on Right (Matching Mockup) */}
       <div className="absolute top-0 right-0 w-[500px] h-full opacity-[0.07] pointer-events-none hidden md:block">
@@ -158,11 +194,11 @@ export function UpcomingEventsSection() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
         
         {/* Header Block: Title, Subtitle, and Decorative Flourish (Exact match to Mockup) */}
-        <div className="text-center space-y-2 mb-10 sm:mb-14">
+        <div className="text-center space-y-2 mb-8 sm:mb-14">
           <h2 className="font-serif text-3xl sm:text-5xl lg:text-[52px] font-extrabold text-[#3D0C16] tracking-tight leading-tight">
             Upcoming Events
           </h2>
-          <p className="text-sm sm:text-base text-[#5B1525]/85 font-medium max-w-xl mx-auto">
+          <p className="text-xs sm:text-base text-[#5B1525]/85 font-medium max-w-xl mx-auto">
             Be a part of inspiring events and opportunities
           </p>
 
@@ -175,13 +211,18 @@ export function UpcomingEventsSection() {
         </div>
 
         {/* 3D CoverFlow Carousel Stage */}
-        <div className="relative py-4 sm:py-8">
+        <div
+          className="relative py-4 sm:py-8 touch-pan-y"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           
           {/* Left Arrow Button */}
           <button
             onClick={handlePrev}
             aria-label="Previous event"
-            className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/95 hover:bg-white text-[#3D0C16] border border-[#C69A60]/50 shadow-[0_8px_25px_rgba(61,12,22,0.14)] flex items-center justify-center text-xl font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            className="absolute left-1 sm:left-6 top-1/2 -translate-y-1/2 z-40 w-9 h-9 sm:w-13 sm:h-13 rounded-full bg-white/95 hover:bg-white text-[#3D0C16] border border-[#C69A60]/50 shadow-[0_8px_25px_rgba(61,12,22,0.14)] flex items-center justify-center text-lg sm:text-xl font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
           >
             ‹
           </button>
@@ -190,14 +231,14 @@ export function UpcomingEventsSection() {
           <button
             onClick={handleNext}
             aria-label="Next event"
-            className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/95 hover:bg-white text-[#3D0C16] border border-[#C69A60]/50 shadow-[0_8px_25px_rgba(61,12,22,0.14)] flex items-center justify-center text-xl font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            className="absolute right-1 sm:right-6 top-1/2 -translate-y-1/2 z-40 w-9 h-9 sm:w-13 sm:h-13 rounded-full bg-white/95 hover:bg-white text-[#3D0C16] border border-[#C69A60]/50 shadow-[0_8px_25px_rgba(61,12,22,0.14)] flex items-center justify-center text-lg sm:text-xl font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
           >
             ›
           </button>
 
           {/* 3D CoverFlow Viewport */}
           <div
-            className="relative h-[480px] sm:h-[510px] w-full flex items-center justify-center overflow-visible"
+            className="relative h-[480px] sm:h-[510px] w-full flex items-center justify-center overflow-hidden md:overflow-visible"
             style={{ perspective: "1400px", transformStyle: "preserve-3d" }}
           >
             {events.map((evt, idx) => {
@@ -223,33 +264,33 @@ export function UpcomingEventsSection() {
               if (isCenter) {
                 translateX = 0;
                 rotateY = 0;
-                scale = 1.08;
+                scale = isMobile ? 1.0 : 1.08;
                 zIndex = 30;
                 opacity = 1;
               } else if (isImmediateLeft) {
-                translateX = -260;
-                rotateY = 24;
-                scale = 0.92;
+                translateX = isMobile ? -135 : -260;
+                rotateY = isMobile ? 16 : 24;
+                scale = isMobile ? 0.82 : 0.92;
                 zIndex = 20;
-                opacity = 0.95;
+                opacity = isMobile ? 0.6 : 0.95;
               } else if (isImmediateRight) {
-                translateX = 260;
-                rotateY = -24;
-                scale = 0.92;
+                translateX = isMobile ? 135 : 260;
+                rotateY = isMobile ? -16 : -24;
+                scale = isMobile ? 0.82 : 0.92;
                 zIndex = 20;
-                opacity = 0.95;
+                opacity = isMobile ? 0.6 : 0.95;
               } else if (isFarLeft) {
-                translateX = -480;
+                translateX = isMobile ? -240 : -480;
                 rotateY = 36;
-                scale = 0.82;
+                scale = isMobile ? 0.6 : 0.82;
                 zIndex = 10;
-                opacity = 0.75;
+                opacity = isMobile ? 0 : 0.75;
               } else if (isFarRight) {
-                translateX = 480;
+                translateX = isMobile ? 240 : 480;
                 rotateY = -36;
-                scale = 0.82;
+                scale = isMobile ? 0.6 : 0.82;
                 zIndex = 10;
-                opacity = 0.75;
+                opacity = isMobile ? 0 : 0.75;
               } else {
                 translateX = offset < 0 ? -600 : 600;
                 rotateY = offset < 0 ? 45 : -45;

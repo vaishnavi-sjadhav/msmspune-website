@@ -461,7 +461,7 @@ export function StarPlacementsSection() {
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
           style={{ perspective: "1500px", transformStyle: "preserve-3d" }}
-          className="overflow-x-auto scroll-smooth flex items-center gap-6 sm:gap-8 lg:gap-10 py-12 px-[calc(50vw-160px)] sm:px-[calc(50vw-200px)] md:px-[calc(50vw-220px)] lg:px-[calc(50vw-230px)] scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] cursor-grab active:cursor-grabbing"
+          className="overflow-x-auto scroll-smooth flex items-center gap-5 sm:gap-8 lg:gap-10 py-10 sm:py-12 px-[calc(50vw-140px)] sm:px-[calc(50vw-170px)] md:px-[calc(50vw-190px)] lg:px-[calc(50vw-205px)] scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] cursor-grab active:cursor-grabbing touch-pan-x"
         >
           {students.map((st, idx) => {
             const isCenter = idx === activeIndex;
@@ -483,7 +483,7 @@ export function StarPlacementsSection() {
                 className="shrink-0 focus:outline-none"
               >
                 <div
-                  className="coverflow-card-inner w-[310px] sm:w-[350px] md:w-[380px] lg:w-[410px] relative transition-transform duration-150 ease-out will-change-transform"
+                  className="coverflow-card-inner w-[280px] sm:w-[340px] md:w-[380px] lg:w-[410px] relative transition-transform duration-150 ease-out will-change-transform"
                 >
                   {/* Outer Thick White Plaque / Pedestal (Enlarged with Luxury Shadow) */}
                   <div

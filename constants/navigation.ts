@@ -126,9 +126,9 @@ export const NAV_ITEMS: NavItem[] = [
     label: "Campus Life",
     href: "/campus-life",
     dropdown: [
-      { label: "Student Clubs & Committees", description: "Over 25+ student-driven leadership societies", href: "/#clubs" },
-      { label: "Modern Infrastructure", description: "Smart classrooms, digital amphitheater & auditorium", href: "/#infra" },
-      { label: "Sports & Recreation", description: "Indoor sports complex, gym & athletic grounds", href: "/#sports" },
+      { label: "Modern Infrastructure", description: "Smart classrooms, digital amphitheater & auditorium", href: "/campus-life#infrastructure" },
+      { label: "Student Clubs & Committees", description: "Over 25+ student-driven leadership societies", href: "/campus-life#clubs" },
+      { label: "Hostels & Recreation", description: "Executive residences, cafeteria & sports complex", href: "/campus-life" },
     ],
   },
   {

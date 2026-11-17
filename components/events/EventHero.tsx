@@ -15,15 +15,15 @@ export function EventHero() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-[#3D0C16] via-[#4A0F1D] to-[#2B060E] text-[#FAF3E8]">
       {/* High-Resolution Auditorium Crowd Background (Curated Clean Unsplash) */}
-      <div className="absolute inset-0 opacity-25 pointer-events-none mix-blend-luminosity">
+      <div className="absolute inset-0 opacity-40 pointer-events-none">
         <Image
           src="/events/hero-auditorium.jpg"
           alt="Auditorium Keynote Presentation Scene"
           fill
-          className="object-cover object-center"
+          className="object-cover object-center brightness-105"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#3D0C16] via-[#3D0C16]/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#3D0C16]/90 via-[#3D0C16]/60 to-transparent" />
       </div>
 
       {/* Cinematic Golden Ambient Glows */}
